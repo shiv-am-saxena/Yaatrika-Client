@@ -1,0 +1,82 @@
+import React from 'react'
+import { Meteors } from '../components/ui/Meteors'
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'motion/react'
+
+export default function Home() {
+    return (
+        <div className="relative h-screen w-full max-w-screen overflow-hidden bg-gradient-to-b from-purple-950 to-purple-700 p-4">
+            {/* HERO Content Container */}
+            <div className="flex min-h-screen flex-col items-center justify-center px-6 py-16 md:px-24 md:py-32">
+
+                {/* Animated Heading */}
+                <h1 className="relative z-10 mx-auto max-w-5xl text-center text-3xl font-extrabold tracking-tight text-slate-200 md:text-5xl lg:text-7xl leading-tight">
+                    {"Your Journey, Your Safety - Anytime, Anywhere."
+                        .split(" ")
+                        .map((word, index) => (
+                            <motion.span
+                                key={index}
+                                initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
+                                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                                transition={{
+                                    duration: 0.3,
+                                    delay: index * 0.08, // Slightly faster reveal
+                                    ease: "easeInOut",
+                                }}
+                                className="mr-2 inline-block"
+                            >
+                                {word}
+                            </motion.span>
+                        ))}
+                </h1>
+
+                {/* Animated Subtext */}
+                <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.4, delay: 0.7 }}
+                    className="relative z-10 mx-auto mt-6 max-w-2xl text-center text-lg font-normal text-purple-100 md:text-xl"
+                >
+                    With Yaatrika, experience safe, reliable, and women-driven rides. Empowering every journey with trust, comfort, and care.
+                </motion.p>
+
+                {/* CTA Buttons */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.4, delay: 1 }}
+                    className="relative z-10 mt-10 flex flex-wrap items-center justify-center gap-6"
+                >
+                    {/* Primary Button */}
+                    <button className="w-56 transform rounded-full bg-white px-8 py-3 font-semibold text-purple-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:bg-white dark:text-purple-900">
+                        Book a Ride
+                    </button>
+
+                    {/* Secondary Button */}
+                    <button className="w-56 transform rounded-full border-2 border-white bg-transparent px-8 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:text-purple-800 dark:border-purple-300 dark:hover:bg-purple-100">
+                        Become a Driver
+                    </button>
+                </motion.div>
+
+                {/* Showcase Image */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 1.4 }}
+                    className="relative z-10 mt-20 w-full max-w-5xl overflow-hidden rounded-3xl border-2 border-purple-300 bg-purple-100/20 shadow-xl backdrop-blur-sm dark:border-purple-700 dark:bg-purple-900/30"
+                >
+                    <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl">
+                        <img
+                            src="https://images.unsplash.com/photo-1743953729837-bc934e81af4f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="Landing page preview"
+                            className="h-full w-full object-cover"
+                        />
+                    </div>
+                </motion.div>
+            </div>
+
+            {/* Background Meteor Effect */}
+            <Meteors />
+        </div>
+    )
+}
