@@ -16,7 +16,7 @@ export function Login() {
             <ShineBorder shineColor="#fff" />
 
             {/* Login Card */}
-            <div className="shadow-input w-md max-w-md rounded-none p-4 md:p-8 bg-purple-950">
+            <div className="shadow-input w-full max-w-md rounded-none p-4 md:p-8 bg-purple-950">
                 <h2 className="text-xl font-bold text-white">
                     Welcome to Yaatrika
                 </h2>

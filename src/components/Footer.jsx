@@ -43,8 +43,8 @@ const Footer = () => {
                     <div className="flex justify-center space-y-4 flex-col">
                         <p className="transition-colors hover:text-text-neutral-800 text-neutral-600 dark:text-neutral-300 font-bold">Legal</p>
                         <ul className="transition-colors hover:text-text-neutral-800 text-neutral-600 dark:text-neutral-300 list-none space-y-4">
-                            <li><Link className="transition-colors hover:text-text-neutral-800" to="#">Privacy Policy</Link></li>
-                            <li><Link className="transition-colors hover:text-text-neutral-800" to="#">Terms of Service</Link></li>
+                            <li><Link className="transition-colors hover:text-text-neutral-800" to="/privacy-policy">Privacy Policy</Link></li>
+                            <li><Link className="transition-colors hover:text-text-neutral-800" to="/terms-and-conditions">Terms of Service</Link></li>
                             <li><Link className="transition-colors hover:text-text-neutral-800" to="#">Cookie Policy</Link></li>
                         </ul>
                     </div>

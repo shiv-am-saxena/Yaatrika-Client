@@ -4,42 +4,59 @@ import { Label } from "./ui/Label"
 import { Input } from "./ui/InputBx";
 import { ShineBorder } from './ui/ShineBorder'
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { showErrorToast } from "../lib/toast";
 export function Signup() {
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("Form submitted");
+    const { register, handleSubmit } = useForm();
+    const registerHandler = (data) => {
+        if (data.password !== data.cnfPassword) {
+            showErrorToast("Passwords do not match!"); // show toast
+            return;
+        }
+        
+        console.log(data);
     };
     return (
         <div className="relative h-fit mx-auto w-fit overflow-hidden md:rounded-2xl">
             <ShineBorder shineColor={'#fff'} />
             <div
-                className="shadow-input  w-full max-w-md rounded-none p-4  md:p-8 bg-purple-950">
-                <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
+                className="shadow-input w-full sm:w-md max-w-md rounded-none p-4  md:p-8 bg-purple-950">
+                <h2 className="text-xl font-bold text-center text-neutral-200">
                     Welcome to Yaatrika
                 </h2>
-                <form className="my-8" onSubmit={handleSubmit}>
-                    <div
-                        className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
-                        <LabelInputContainer>
-                            <Label htmlFor="firstname">First name</Label>
-                            <Input id="firstname" placeholder="Tyler" type="text" />
-                        </LabelInputContainer>
-                        <LabelInputContainer>
-                            <Label htmlFor="lastname">Last name</Label>
-                            <Input id="lastname" placeholder="Durden" type="text" />
-                        </LabelInputContainer>
-                    </div>
+                <form className="my-8" onSubmit={handleSubmit(registerHandler)}>
+                    <LabelInputContainer className="mb-4">
+                        <Label htmlFor="name">Full name</Label>
+                        <Input id="name" placeholder="Tyler" type="text" {...register("name", { required: true })} />
+                    </LabelInputContainer>
+                    <LabelInputContainer className="mb-4">
+                        <Label htmlFor="phone">Phone</Label>
+                        <Input id="phone" placeholder="+919151247870" type="tel" {...register("phone", { required: true })} />
+                    </LabelInputContainer>
                     <LabelInputContainer className="mb-4">
                         <Label htmlFor="email">Email Address</Label>
-                        <Input id="email" placeholder="projectmayhem@fc.com" type="email" />
+                        <Input id="email" placeholder="projectmayhem@fc.com" type="email" {...register("email", { required: true })} />
                     </LabelInputContainer>
                     <LabelInputContainer className="mb-4">
                         <Label htmlFor="password">Password</Label>
-                        <Input id="password" placeholder="••••••••" type="password" />
+                        <Input
+                            id="password"
+                            placeholder="••••••••"
+                            type="password"
+                            {...register("password", { required: "Password is required" })}
+                        />
                     </LabelInputContainer>
+
                     <LabelInputContainer className="mb-8">
-                        <Label htmlFor="twitterpassword">Your twitter password</Label>
-                        <Input id="twitterpassword" placeholder="••••••••" type="twitterpassword" />
+                        <Label htmlFor="cnfPassword">Confirm Password</Label>
+                        <Input
+                            id="cnfPassword"
+                            placeholder="••••••••"
+                            type="password"
+                            {...register("cnfPassword", {
+                                required: "Confirm Password is required"
+                            })}
+                        />
                     </LabelInputContainer>
 
                     <button
@@ -49,7 +66,7 @@ export function Signup() {
                         Sign up &rarr;
                         <BottomGradient />
                     </button>
-                <p className="text-center mt-3 -mb-8 text-white">Already have an account? <Link to="/auth/login" className="text-blue-500">Sign in</Link></p>
+                    <p className="text-center mt-3 -mb-8 text-white">Already have an account? <Link to="/auth/login" className="text-blue-500">Sign in</Link></p>
                 </form>
 
             </div>

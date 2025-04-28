@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../config/axiosInstance";
 import { setUser, clearAuth, setLoading, setError } from "../context/slices/authSlice";
+import { showErrorToast } from "../lib/toast";
 
 const useAuth = () => {
     const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const useAuth = () => {
         try {
             dispatch(setLoading(true));
 
-            const response = await axiosInstance.get("/auth/verify-token");
+            const response = await axiosInstance.get("/verify-token");
 
             if (response.data.success) {
                 dispatch(setUser(response.data.data));
@@ -23,6 +24,7 @@ const useAuth = () => {
         } catch (err) {
             console.error("Auth verification failed:", err);
             dispatch(setError(err.message || "Authentication failed"));
+            showErrorToast("Authentication Failed");
             dispatch(clearAuth());
             navigate("/login");
         } finally {
