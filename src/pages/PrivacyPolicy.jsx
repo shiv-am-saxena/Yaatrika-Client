@@ -12,7 +12,7 @@ const PrivacyPolicy = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 className="max-w-4xl w-full"
-            >
+                >
 
                 <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center">Privacy Policy</h1>
 
@@ -98,7 +98,6 @@ const PrivacyPolicy = () => {
                             <a href="mailto:support@yaatrika.com" className="text-purple-300 underline">support@yaatrika.com</a>
                         </p>
                     </section>
-
                 </div>
 
                 <div className="mt-12 flex justify-center">

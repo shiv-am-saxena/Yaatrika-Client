@@ -1,6 +1,11 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
+@import "tailwindcss";
+/* @font-face {
+    font-family: Montserrat;
+    font-style: normal;
+    font-display: swap;
+    src: url("./assets/fonts/Montserrat-VariableFont_wght.ttf") format("ttf");
+  } */
 html {
     scroll-behavior: smooth;
 }
@@ -51,6 +56,5 @@ html {
 }
 
 @theme {
-    --font-display: "Montserrat", "sans-serif"; 
-
-}
+    --font-montserrat: "Montserrat", "sans-serif"; 
+  }

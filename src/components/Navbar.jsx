@@ -33,7 +33,7 @@ const Navbar = () => {
         <nav className={`sticky top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? "backdrop-blur-md shadow-lg bg-purple-950/80 border-b border-purple-800" : "bg-purple-950"}`}>
             <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-3 md:py-4">
                 {/* Logo */}
-                <h1 className="text-2xl lg:text-3xl font-bold uppercase text-white tracking-widest font-display">
+                <h1 className="text-2xl lg:text-3xl font-bold uppercase text-white tracking-widest font-montserrat">
                     <Link to="/">Yaatrika</Link>
                 </h1>
 
