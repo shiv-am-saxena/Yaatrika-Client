@@ -5,6 +5,7 @@ const initialState = {
     token: localStorage.getItem("token") || null,
     loading: false,
     error: null,
+    isAuthenticated: false,
 };
 
 const authSlice = createSlice({
@@ -13,6 +14,7 @@ const authSlice = createSlice({
     reducers: {
         setUser(state, action) {
             state.user = action.payload;
+            state.isAuthenticated = true;
         },
         setToken(state, action) {
             state.token = action.payload;
@@ -22,6 +24,7 @@ const authSlice = createSlice({
             state.user = null;
             state.token = null;
             localStorage.removeItem("token");
+            state.isAuthenticated = false;
         },
         setLoading(state, action) {
             state.loading = action.payload;

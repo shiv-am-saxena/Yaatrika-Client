@@ -4,9 +4,10 @@ import TermsAndConditions from '../pages/TermsAndConditions'
 import PrivacyPolicy from '../pages/PrivacyPolicy'
 import { Login } from '../components/LoginForm'
 import { Signup } from '../components/SignupForm'
-import Home from '../pages/HOme'
+import Home from '../pages/Home'
 import Auth from '../config/Auth';
 import AuthPage from '../pages/AuthPAge'
+import Profile from '../pages/Profile'
 export default function AppRoutes() {
     return (
         <Routes>
@@ -16,6 +17,7 @@ export default function AppRoutes() {
                 <Route path="register" element={<Signup />} />
                 {/* <Route path="forgot-password" element={<ForgotPassword />} /> */}
             </Route>
+            <Route path='/profile' element={<Profile />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         </Routes>

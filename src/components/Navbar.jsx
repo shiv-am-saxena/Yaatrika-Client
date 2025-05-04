@@ -2,16 +2,16 @@ import { Link, NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "motion/react";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-
+    const { isAuthenticated, user } = useSelector((state) => state.auth);
     const authLink = [
         { name: "Sign In", slug: "/auth/login" },
         { name: "Sign Up", slug: "/auth/register" },
     ];
-
     const handleMenuToggle = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -39,6 +39,17 @@ const Navbar = () => {
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center space-x-8">
+                    <NavLink
+                        to='/'
+                        className={({ isActive }) =>
+                            `text-lg font-semibold tracking-wide ${isActive
+                                ? "text-white underline underline-offset-4"
+                                : "text-purple-200 hover:text-white"
+                            }`
+                        }
+                    >
+                        Home
+                    </NavLink>
                     {authLink.map(({ name, slug }, index) => (
                         <NavLink
                             key={index}
@@ -47,12 +58,39 @@ const Navbar = () => {
                                 `text-lg font-semibold tracking-wide ${isActive
                                     ? "text-white underline underline-offset-4"
                                     : "text-purple-200 hover:text-white"
-                                }`
+                                } ${isAuthenticated
+                                ? "hidden"
+                                : "block"
+                            }`
                             }
                         >
                             {name}
                         </NavLink>
                     ))}
+                    {isAuthenticated && <>
+                        <NavLink
+                            to='/profile'
+                            className={({ isActive }) =>
+                                `text-lg font-semibold tracking-wide ${isActive
+                                    ? "text-white underline underline-offset-4"
+                                    : "text-purple-200 hover:text-white"
+                                }`
+                            }
+                        >
+                            Welcome, {user?.name}
+                        </NavLink>
+                        <NavLink
+                            to='/auth/logout'
+                            className={({ isActive }) =>
+                                `text-lg font-semibold tracking-wide ${isActive
+                                    ? "text-white underline underline-offset-4"
+                                    : "text-purple-200 hover:text-white"
+                                }`
+                            }
+                        >
+                            Logout
+                        </NavLink></>
+                    }
                 </div>
 
                 {/* Hamburger Icon */}

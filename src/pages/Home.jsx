@@ -3,6 +3,8 @@ import { Meteors } from '../components/ui/Meteors'
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'motion/react'
 import { BentoGrid, BentoGridItem } from "../components/ui/BentoGrid";
+import photo from '../assets/yaatrika.png'
+import {ShineBorder} from '../components/ui/ShineBorder'
 export default function Home() {
     return (
         <>
@@ -64,15 +66,16 @@ export default function Home() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 1.4 }}
-                        className="relative z-10 mt-20 w-full max-w-5xl overflow-hidden rounded-3xl border-2 border-purple-300 bg-purple-100/20 shadow-xl backdrop-blur-sm dark:border-purple-700 dark:bg-purple-900/30"
+                        className="relative z-10 mt-16 w-full max-w-5xl overflow-hidden rounded-3xl border-2 border-purple-300 bg-purple-100/20 shadow-xl backdrop-blur-sm dark:border-purple-700 dark:bg-purple-900/30"
                     >
                         <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl">
                             <img
-                                src="https://images.unsplash.com/photo-1743953729837-bc934e81af4f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                alt="Landing page preview"
-                                className="h-full w-full object-cover"
+                                src={photo}
+                                alt="Yaatrika"
+                                className="h-full w-full object-fit"
                             />
                         </div>
+                        <ShineBorder shineColor='#fff'/>
                     </motion.div>
                 </div>
 
@@ -104,26 +107,25 @@ const Skeleton = () => (
 const items = [
     {
         title: "The Dawn of Innovation",
-        description: "Explore the birth of groundbreaking ideas and inventions.",
+        description: `Explore how Yaatrika is redefining women's safety in transportation. From a simple vision to a transformative platform - learn how we are building a secure and empowering ride-sharing ecosystem.`,
         header: <Skeleton />,
         className: "md:col-span-2",
     },
     {
         title: "The Digital Revolution",
-        description: "Dive into the transformative power of technology.",
+        description: "Dive into the power of technology built for women. Discover how GPS tracking, real-time monitoring, and AI-driven safety systems work together to keep our riders and drivers safe.",
         header: <Skeleton />,
         className: "md:col-span-1",
     },
     {
         title: "The Art of Design",
-        description: "Discover the beauty of thoughtful and functional design.",
+        description: "See how thoughtful UI/UX enhances trust and usability. Yaatrika’s interface is crafted for simplicity and confidence - because safety begins with clarity.",
         header: <Skeleton />,
         className: "md:col-span-1",
     },
     {
         title: "The Power of Communication",
-        description:
-            "Understand the impact of effective communication in our lives.",
+        description:"Understand how Yaatrika connects women to support when they need it most. From emergency contacts to real-time alerts, our platform ensures you’re never alone on the road.",
         header: <Skeleton />,
         className: "md:col-span-2",
     },

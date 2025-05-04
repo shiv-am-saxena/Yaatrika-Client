@@ -3,18 +3,49 @@ import { cn } from "../lib/utils";
 import { Label } from "./ui/Label"
 import { Input } from "./ui/InputBx";
 import { ShineBorder } from './ui/ShineBorder'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { showErrorToast } from "../lib/toast";
+import { clearAuth, setError, setLoading, setToken, setUser } from "../context/slices/authSlice";
+import axiosInstance from "../config/axiosInstance";
+import { useDispatch, useSelector } from "react-redux";
 export function Signup() {
     const { register, handleSubmit } = useForm();
-    const registerHandler = (data) => {
-        if (data.password !== data.cnfPassword) {
-            showErrorToast("Passwords do not match!"); // show toast
-            return;
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { loading, error } = useSelector((state) => state.auth);
+
+    const registerHandler = async (data) => {
+        try {
+            if (data.password !== data.cnfPassword) {
+                showErrorToast("Passwords do not match!"); // show toast
+                return;
+            }
+            dispatch(setLoading(true));
+
+            const response = await axiosInstance.post("/auth/client/register", {
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                password: data.password
+            });
+            const res = await response.data;
+            if(res.success){
+                localStorage.setItem('token', res.data.token);
+                dispatch(setUser(res.data.user));
+                dispatch(setToken(res.data.token));
+                navigate("/profile");
+            }else{
+                throw new Error(res.data.message)
+            }
+        } catch (err) {
+            console.error("User registration failed:", err);
+            dispatch(setError(err.response.data.message || "User registration failed"));
+            showErrorToast(error);
+            dispatch(clearAuth());
+        } finally {
+            dispatch(setLoading(false));
         }
-        
-        console.log(data);
     };
     return (
         <div className="relative h-fit mx-auto w-fit overflow-hidden md:rounded-2xl">
@@ -61,9 +92,10 @@ export function Signup() {
 
                     <button
                         type="submit"
+                        disabled={loading}
                         className="group/btn relative block h-10 w-full rounded-md bg-purple-900 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff30_inset,0px_-1px_0px_0px_#ffffff30_inset] hover:bg-purple-800 transition-all"
                     >
-                        Sign up &rarr;
+                        {loading ? "Processing...": `Sign up →`}
                         <BottomGradient />
                     </button>
                     <p className="text-center mt-3 -mb-8 text-white">Already have an account? <Link to="/auth/login" className="text-blue-500">Sign in</Link></p>
