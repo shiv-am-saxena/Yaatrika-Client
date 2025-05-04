@@ -6,7 +6,7 @@ import { Login } from '../components/LoginForm'
 import { Signup } from '../components/SignupForm'
 import Home from '../pages/Home'
 import Auth from '../config/Auth';
-import AuthPage from '../pages/AuthPAge'
+import AuthPage from '../pages/AuthPage'
 import Profile from '../pages/Profile'
 export default function AppRoutes() {
     return (
