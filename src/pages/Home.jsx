@@ -5,6 +5,7 @@ import { motion } from 'motion/react'
 import { BentoGrid, BentoGridItem } from "../components/ui/BentoGrid";
 import photo from '../assets/yaatrika.png'
 import {ShineBorder} from '../components/ui/ShineBorder'
+import dawn from '../assets/dawn-of-innovation.png'
 export default function Home() {
     return (
         <>
@@ -100,15 +101,15 @@ export default function Home() {
     )
 }
 
-const Skeleton = () => (
-    <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl  bg-dot-white/[0.2] [mask-image:radial-gradient(ellipse_at_center,white,transparent)]  border border-white/[0.2] bg-purple-800"></div>
+const Skeleton = (src) => (
+    <img className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl  bg-dot-white/[0.2] [mask-image:radial-gradient(ellipse_at_center,white,transparent)]  border border-white/[0.2]" src={src}/>
 );
 
 const items = [
     {
         title: "The Dawn of Innovation",
         description: `Explore how Yaatrika is redefining women's safety in transportation. From a simple vision to a transformative platform - learn how we are building a secure and empowering ride-sharing ecosystem.`,
-        header: <Skeleton />,
+        header: <Skeleton src={dawn}/>,
         className: "md:col-span-2",
     },
     {
