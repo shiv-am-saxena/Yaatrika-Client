@@ -17,7 +17,6 @@ export default function AppRoutes() {
                 <Route path="register" element={<Signup />} />
                 {/* <Route path="forgot-password" element={<ForgotPassword />} /> */}
             </Route>
-            <Route path='/profile' element={<Profile />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         </Routes>

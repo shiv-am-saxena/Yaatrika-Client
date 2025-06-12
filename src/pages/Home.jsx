@@ -4,8 +4,11 @@ import { Meteors } from '../components/ui/Meteors'
 import { motion } from 'motion/react'
 import { BentoGrid, BentoGridItem } from "../components/ui/BentoGrid";
 import photo from '../assets/yaatrika.png'
-import {ShineBorder} from '../components/ui/ShineBorder'
+import { ShineBorder } from '../components/ui/ShineBorder'
 import dawn from '../assets/dawn-of-innovation.png'
+import digital from "../assets/digital-revolution.png";
+import power from "../assets/power_of_comm.png";
+import art from "../assets/art-of-design.png";
 export default function Home() {
     return (
         <>
@@ -76,7 +79,7 @@ export default function Home() {
                                 className="h-full w-full object-fit"
                             />
                         </div>
-                        <ShineBorder shineColor='#fff'/>
+                        <ShineBorder shineColor='#fff' />
                     </motion.div>
                 </div>
 
@@ -101,33 +104,40 @@ export default function Home() {
     )
 }
 
-const Skeleton = (src) => (
-    <img className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl  bg-dot-white/[0.2] [mask-image:radial-gradient(ellipse_at_center,white,transparent)]  border border-white/[0.2]" src={src}/>
-);
+const Skeleton = ({ src }) => {
+    return (
+        <img
+            src={src || '/placeholder.png'} // Use fallback if src is not provided
+            alt="Yaatrika Feature"
+            className="flex grow w-full h-40 bg-dot-white/[0.2] rounded-xl border border-white/[0.2] object-contain px-2 pt-2"
+        />
+    );
+};
+
 
 const items = [
     {
         title: "The Dawn of Innovation",
         description: `Explore how Yaatrika is redefining women's safety in transportation. From a simple vision to a transformative platform - learn how we are building a secure and empowering ride-sharing ecosystem.`,
-        header: <Skeleton src={dawn}/>,
+        header: <Skeleton src={dawn} />,
         className: "md:col-span-2",
     },
     {
         title: "The Digital Revolution",
         description: "Dive into the power of technology built for women. Discover how GPS tracking, real-time monitoring, and AI-driven safety systems work together to keep our riders and drivers safe.",
-        header: <Skeleton />,
+        header: <Skeleton src={digital}/>,
         className: "md:col-span-1",
     },
     {
         title: "The Art of Design",
         description: "See how thoughtful UI/UX enhances trust and usability. Yaatrika’s interface is crafted for simplicity and confidence - because safety begins with clarity.",
-        header: <Skeleton />,
+        header: <Skeleton src={art} />,
         className: "md:col-span-1",
     },
     {
         title: "The Power of Communication",
-        description:"Understand how Yaatrika connects women to support when they need it most. From emergency contacts to real-time alerts, our platform ensures you’re never alone on the road.",
-        header: <Skeleton />,
+        description: "Understand how Yaatrika connects women to support when they need it most. From emergency contacts to real-time alerts, our platform ensures you’re never alone on the road.",
+        header: <Skeleton src={power}/>,
         className: "md:col-span-2",
     },
 ];

@@ -13,7 +13,7 @@ const useAuth = () => {
         try {
             dispatch(setLoading(true));
 
-            const res = await axiosInstance.get("/verify-token",{
+            const res = await axiosInstance.get("/api/v1/verify-token",{
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },});
