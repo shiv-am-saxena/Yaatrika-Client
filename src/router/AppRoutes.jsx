@@ -1,27 +1,43 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import TermsAndConditions from '../pages/TermsAndConditions'
-import PrivacyPolicy from '../pages/PrivacyPolicy'
-import { Login } from '../components/LoginForm'
-import { Signup } from '../components/SignupForm'
-import Home from '../pages/Home'
-import Auth from '../config/Auth';
-import AuthPage from '../pages/AuthPage'
-import Profile from '../pages/Profile'
-import { CaptainSignup } from '../components/CaptainForm'
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+
+import TermsAndConditions from '../pages/TermsAndConditions';
+import PrivacyPolicy from '../pages/PrivacyPolicy';
+import { Login } from '../components/LoginForm';
+import { Signup } from '../components/SignupForm';
+import Home from '../pages/Home';
+import AuthPage from '../pages/AuthPage';
+import { CaptainSignup } from '../components/CaptainForm';
+
+import UserHome from '../pages/user/UserHome';
+import CaptainHome from '../pages/captain/CaptainHome';
+
+import ProtectedRoute from './ProtectedRoutes'; // ✅ Ensure correct filename
+
 export default function AppRoutes() {
     return (
         <Routes>
+            {/* Public Routes */}
             <Route path="/" element={<Home />} />
-            <Route path="/auth" element={<AuthPage />} >
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+
+            {/* Auth Routes */}
+            <Route path="/auth" element={<AuthPage />}>
                 <Route path="login" element={<Login />} />
                 <Route path="user/register" element={<Signup />} />
                 <Route path="captain/register" element={<CaptainSignup />} />
-
-                {/* <Route path="forgot-password" element={<ForgotPassword />} /> */}
             </Route>
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+
+            {/* Protected Routes for Users */}
+            <Route path="/user" element={<ProtectedRoute />}>
+                <Route path="home" element={<UserHome />} />
+            </Route>
+
+            {/* Protected Routes for Captains */}
+            <Route path="/captain" element={<ProtectedRoute />}>
+                <Route path="home" element={<CaptainHome />} />
+            </Route>
         </Routes>
-    )
+    );
 }

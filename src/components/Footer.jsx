@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Footer = () => {
+    const location = useLocation();
+    if (location.pathname.startsWith("/user") || location.pathname.startsWith("/captain")) return null;
     return (
         <div className="border-t border-white/[0.1] px-8 py-20 bg-purple-950 w-full relative overflow-hidden">
             <div className="max-w-7xl mx-auto text-sm text-neutral-500 flex sm:flex-row flex-col justify-between items-start md:px-8">

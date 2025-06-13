@@ -5,7 +5,7 @@ const initialState = {
     token: localStorage.getItem("token") || null,
     loading: false,
     error: null,
-    isAuthenticated: false,
+    isAuthenticated: !!localStorage.getItem("token"), // ✔️ Pre-fill based on token
 };
 
 const authSlice = createSlice({
@@ -19,12 +19,13 @@ const authSlice = createSlice({
         setToken(state, action) {
             state.token = action.payload;
             localStorage.setItem("token", action.payload);
+            state.isAuthenticated = true; // ✅ Ensure login persists across reloads
         },
         clearAuth(state) {
             state.user = null;
             state.token = null;
-            localStorage.removeItem("token");
             state.isAuthenticated = false;
+            localStorage.removeItem("token");
         },
         setLoading(state, action) {
             state.loading = action.payload;

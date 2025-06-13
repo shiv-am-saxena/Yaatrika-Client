@@ -22,7 +22,7 @@ export function Login() {
     const [disabled, setDisabled] = React.useState(false);
     const [clicks, setClicks] = React.useState(0);
     const [otp, setOtp] = React.useState("");
-    const [phone, setPhone] = React.useState();
+    const [phone, setPhone] = React.useState("");
 
 
     const getOTP = async (e) => {
@@ -53,6 +53,7 @@ export function Login() {
                 if (import.meta.env.VITE_ENV !== "production") {
                     alert("OTP: " + res.data); // Fix incorrect alert usage
                 }
+                dispatch(setUser(res.data.user));
             }
         } catch (err) {
             const message = err?.response?.data?.message || "Failed to send OTP";
@@ -77,7 +78,7 @@ export function Login() {
                 dispatch(setUser(res.data.user));
                 dispatch(setToken(res.data.token));
                 showSuccessToast("OTP Verified");
-                navigate("/");
+                res.data.role === 'user' ? navigate('/user/home'):navigate('/captain/home');
             }
         } catch (err) {
             const message = err?.response?.data?.message || "Login failed";
@@ -105,7 +106,7 @@ export function Login() {
                 <form className="my-8" onSubmit={registerHandler}>
                     <LabelInputContainer className="mb-4">
                         <Label htmlFor="num">Phone Number</Label>
-                        <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+                        <div className="mb-0 flex flex-col items-center space-y-2 md:flex-row md:space-y-0 md:space-x-2">
                             <Input
                                 id="num"
                                 placeholder="9513574682"
@@ -118,7 +119,7 @@ export function Login() {
                             <button
                                 onClick={getOTP}
                                 disabled={disabled || loading}
-                                className="h-10 w-fit mt-0.5 px-5 text-nowrap rounded-md bg-purple-900 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff30_inset,0px_-1px_0px_0px_#ffffff30_inset] hover:bg-purple-800 transition-all"
+                                className="h-10 w-full md:w-fit mt-0.5 px-5 text-nowrap rounded-md bg-purple-900 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff30_inset,0px_-1px_0px_0px_#ffffff30_inset] hover:bg-purple-800 transition-all"
                             >
                                 {loading ? "Processing..." : "Get OTP"}
                             </button>

@@ -32,7 +32,10 @@ export function CaptainSignup() {
     const [isVerified, setIsVerified] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const [clicks, setClicks] = React.useState(0);
-
+    const [vehicalCapacity, setVehicalCapacity] = React.useState("");
+    const [vehicalPlate, setVehicalPlate] = React.useState("");
+    const [vehicalType, setVehicalType] = React.useState("");
+    const [vehicalColor, setVehicalColor] = React.useState("");
     const countries = [
         { id: "+1", name: "United States" },
         { id: "+44", name: "United Kingdom" },
@@ -141,11 +144,11 @@ export function CaptainSignup() {
     const registerHandler = async (e) => {
         e.preventDefault();
 
-        if (!firstName || !lastName || !email || !gender || !countryCode || !phone ) {
+        if (!firstName || !lastName || !email || !gender || !countryCode || !phone) {
             showErrorToast("All fields are required");
             return;
         }
-        if(!isVerified){
+        if (!isVerified) {
             showErrorToast("Verify your number first.");
             return;
         }
@@ -158,7 +161,11 @@ export function CaptainSignup() {
                 gender,
                 countryCode,
                 phoneNumber: phone,
-                isVerified: String(isVerified)
+                isVerified: String(isVerified),
+                vehicalCapacity,
+                vehicalPlate,
+                vehicalType,
+                vehicalColor,
             });
 
             const res = response.data;
@@ -188,7 +195,7 @@ export function CaptainSignup() {
                     Welcome to Yaatrika Captain!
                 </h2>
                 <form className="my-8" onSubmit={registerHandler}>
-                    <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+                    <div className="mb-2 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
                         <LabelInputContainer>
                             <Label htmlFor="firstname">First name</Label>
                             <Input id="firstname" placeholder="Tyler" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
@@ -198,13 +205,13 @@ export function CaptainSignup() {
                             <Input id="lastname" placeholder="Durden" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
                         </LabelInputContainer>
                     </div>
-                    <LabelInputContainer className="mb-4">
+                    <LabelInputContainer className="mb-2">
                         <Label htmlFor="email">Email Address</Label>
                         <Input id="email" placeholder="projectmayhem@fc.com" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </LabelInputContainer>
-                    <LabelInputContainer className="mb-4">
+                    <LabelInputContainer className="mb-2">
                         <Label htmlFor="num">Phone Number</Label>
-                        <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+                        <div className="flex flex-col items-center space-y-2 md:flex-row md:space-y-0 md:space-x-2">
                             <Input
                                 id="num"
                                 placeholder="9513574682"
@@ -219,14 +226,14 @@ export function CaptainSignup() {
                             <button
                                 onClick={getOTP}
                                 disabled={isVerified || disabled}
-                                className="h-10 w-fit mt-0.5 px-5 text-nowrap rounded-md bg-purple-900 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff30_inset,0px_-1px_0px_0px_#ffffff30_inset] hover:bg-purple-800 transition-all"
+                                className="h-10 w-full md:w-fit mt-0.5 px-5 text-nowrap rounded-md bg-purple-900 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff30_inset,0px_-1px_0px_0px_#ffffff30_inset] hover:bg-purple-800 transition-all"
                             >
                                 {loading ? "Processing..." : "Get OTP"}
                             </button>
                         </div>
                     </LabelInputContainer>
-                    <LabelInputContainer className={`${clicks > 0 ? 'block' : 'hidden'} mb-4`}>
-                        <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 justify-between">
+                    <LabelInputContainer className={`${clicks > 0 ? 'block' : 'hidden'} mb-2`}>
+                        <div className="flex flex-col items-center space-y-2 md:flex-row md:space-y-0 md:space-x-2 justify-between">
                             <InputOTP value={otp} onChange={setOtp} maxLength={6} disabled={isVerified}>
                                 <InputOTPGroup>
                                     {[...Array(6)].map((_, i) => (
@@ -278,6 +285,26 @@ export function CaptainSignup() {
                             </Select>
                         </LabelInputContainer>
                     </div>
+                    <LabelInputContainer className={`mb-4`}>
+                        <Label>Vehical Information</Label>
+                        <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 justify-between">
+                            <Input placeholder="Vehical Colour" type="text" value={vehicalColor} onChange={(e) => setVehicalColor(e.target.value)} />
+                            <Input placeholder="Vehical Plate" type="text" value={vehicalPlate} onChange={(e) => setVehicalPlate(e.target.value)} />
+                        </div>
+                        <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 justify-between">
+                            <Input placeholder="Vehical Capacity" type="text" value={vehicalCapacity} onChange={(e) => setVehicalCapacity(e.target.value)} />
+                            <Select onValueChange={setVehicalType} id="gender">
+                                <SelectTrigger className={`w-full bg-purple-500`}>
+                                    <SelectValue placeholder="Select Vehical Type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="car">Car</SelectItem>
+                                    <SelectItem value="bike">Bike</SelectItem>
+                                    <SelectItem value="auto">Auto</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </LabelInputContainer>
                     <button
                         type="submit"
                         disabled={loading || !isVerified}

@@ -204,7 +204,7 @@ export function Signup() {
                     </LabelInputContainer>
                     <LabelInputContainer className="mb-4">
                         <Label htmlFor="num">Phone Number</Label>
-                        <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+                        <div className="flex flex-col items-center space-y-2 md:flex-row md:space-y-0 md:space-x-2">
                             <Input
                                 id="num"
                                 placeholder="9513574682"
@@ -219,14 +219,14 @@ export function Signup() {
                             <button
                                 onClick={getOTP}
                                 disabled={isVerified || disabled}
-                                className="h-10 w-fit mt-0.5 px-5 text-nowrap rounded-md bg-purple-900 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff30_inset,0px_-1px_0px_0px_#ffffff30_inset] hover:bg-purple-800 transition-all"
+                                className="h-10 w-full md:w-fit mt-0.5 px-5 text-nowrap rounded-md bg-purple-900 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff30_inset,0px_-1px_0px_0px_#ffffff30_inset] hover:bg-purple-800 transition-all"
                             >
                                 {loading ? "Processing..." : "Get OTP"}
                             </button>
                         </div>
                     </LabelInputContainer>
                     <LabelInputContainer className={`${clicks > 0 ? 'block' : 'hidden'} mb-4`}>
-                        <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 justify-between">
+                        <div className="flex flex-col items-center space-y-2 md:flex-row md:space-y-0 md:space-x-2 justify-between">
                             <InputOTP value={otp} onChange={setOtp} maxLength={6} disabled={isVerified}>
                                 <InputOTPGroup>
                                     {[...Array(6)].map((_, i) => (
