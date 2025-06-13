@@ -280,7 +280,7 @@ export function CaptainSignup() {
                     </div>
                     <button
                         type="submit"
-                        disabled={loading || isVerified}
+                        disabled={loading || !isVerified}
                         className="group/btn relative block h-10 w-full rounded-md bg-purple-900 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff30_inset,0px_-1px_0px_0px_#ffffff30_inset] hover:bg-purple-800 transition-all"
                     >
                         {loading ? "Processing..." : `Sign up →`}

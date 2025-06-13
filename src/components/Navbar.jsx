@@ -23,7 +23,7 @@ const Navbar = () => {
         const token = localStorage.getItem('token');
         try {
             dispatch(setLoading(true));
-            const response = await axiosInstance.get('/auth/user/logout', {
+            const response = await axiosInstance.get('/auth/logout', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
