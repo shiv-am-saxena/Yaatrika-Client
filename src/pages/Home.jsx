@@ -9,6 +9,7 @@ import dawn from '../assets/dawn-of-innovation.png'
 import digital from "../assets/digital-revolution.png";
 import power from "../assets/power_of_comm.png";
 import art from "../assets/art-of-design.png";
+import { Link } from 'react-router-dom';
 export default function Home() {
     return (
         <>
@@ -55,14 +56,14 @@ export default function Home() {
                         className="relative z-10 mt-10 flex flex-wrap items-center justify-center gap-6"
                     >
                         {/* Primary Button */}
-                        <button className="w-56 transform rounded-full bg-white px-8 py-3 font-semibold text-purple-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:bg-white dark:text-purple-900">
+                        <Link to={'/auth/user/register'} className="w-56 transform rounded-full text-center border-2 border-white bg-white px-8 py-3 font-semibold text-purple-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:bg-white dark:text-purple-900">
                             Book a Ride
-                        </button>
+                        </Link>
 
                         {/* Secondary Button */}
-                        <button className="w-56 transform rounded-full border-2 border-white bg-transparent px-8 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:text-purple-800 dark:border-purple-300 dark:hover:bg-purple-100">
+                        <Link to={'/auth/captain/register'} className="w-56 transform text-center rounded-full border-2 border-white bg-transparent px-8 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:text-purple-800 dark:border-purple-300 dark:hover:bg-purple-100">
                             Become a Driver
-                        </button>
+                        </Link>
                     </motion.div>
 
                     {/* Showcase Image */}

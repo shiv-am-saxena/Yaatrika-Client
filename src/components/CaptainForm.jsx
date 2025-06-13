@@ -17,7 +17,7 @@ import {
     SelectValue,
 } from "./ui/Select";
 
-export function Signup() {
+export function CaptainSignup() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { loading, error } = useSelector((state) => state.auth);
@@ -151,7 +151,7 @@ export function Signup() {
         }
         try {
             dispatch(setLoading(true));
-            const response = await axiosInstance.post("/auth/user/register", {
+            const response = await axiosInstance.post("/auth/captain/register", {
                 firstName,
                 lastName,
                 email,
@@ -185,7 +185,7 @@ export function Signup() {
             <div
                 className="shadow-input w-full sm:w-md max-w-md rounded-none p-4  md:p-8 bg-purple-950">
                 <h2 className="text-xl font-bold text-center text-neutral-200">
-                    Welcome to Yaatrika
+                    Welcome to Yaatrika Captain!
                 </h2>
                 <form className="my-8" onSubmit={registerHandler}>
                     <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
@@ -248,7 +248,7 @@ export function Signup() {
                             </button>
                         </div>
                     </LabelInputContainer>
-                    <div className="flex flex-col mb-4 space-y-2 md:flex-row md:space-y-0 md:space-x-2 justify-between">
+                    <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 justify-between">
                         <LabelInputContainer className={"mb-0"}>
                             <Label htmlFor="gender">Gender</Label>
                             <Select onValueChange={setGender} id="gender">

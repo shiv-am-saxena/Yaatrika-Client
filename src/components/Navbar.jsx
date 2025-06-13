@@ -14,7 +14,7 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const authLink = [
         { name: "Sign In", slug: "/auth/login" },
-        { name: "Sign Up", slug: "/auth/register" },
+        { name: "Sign Up", slug: "/auth/user/register" },
     ];
     const handleMenuToggle = () => {
         setIsMenuOpen(!isMenuOpen);

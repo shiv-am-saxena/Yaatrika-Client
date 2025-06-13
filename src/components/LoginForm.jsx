@@ -41,7 +41,7 @@ export function Login() {
 
         try {
             dispatch(setLoading(true));
-            const response = await axiosInstance.post("/auth/user/send-otp", { phoneNumber: phone });
+            const response = await axiosInstance.post("/auth/send-otp", { phoneNumber: phone });
             const res = response.data;
 
             if (res.success) {
@@ -67,7 +67,7 @@ export function Login() {
         e.preventDefault();
         try {
             dispatch(setLoading(true));
-            const response = await axiosInstance.post("/auth/user/login", {
+            const response = await axiosInstance.post("/auth/login", {
                 phoneNumber: phone,
                 otp,
             });
@@ -98,7 +98,7 @@ export function Login() {
                 </h2>
                 <p className="text-center mt-3 -mb-5 text-white">
                     Don&apos;t have an account?{" "}
-                    <Link to="/auth/register" className="text-blue-500">
+                    <Link to="/auth/user/register" className="text-blue-500">
                         Create One
                     </Link>
                 </p>
