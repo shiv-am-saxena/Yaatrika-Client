@@ -105,7 +105,7 @@ export function Login() {
                 <form className="my-8" onSubmit={registerHandler}>
                     <LabelInputContainer className="mb-4">
                         <Label htmlFor="num">Phone Number</Label>
-                        <div className="flex items-center justify-between w-full gap-3">
+                        <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
                             <Input
                                 id="num"
                                 placeholder="9513574682"
@@ -118,7 +118,7 @@ export function Login() {
                             <button
                                 onClick={getOTP}
                                 disabled={disabled || loading}
-                                className="h-10 w-fit px-5 text-nowrap rounded-md bg-purple-900 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff30_inset,0px_-1px_0px_0px_#ffffff30_inset] hover:bg-purple-800 transition-all"
+                                className="h-10 w-fit mt-0.5 px-5 text-nowrap rounded-md bg-purple-900 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff30_inset,0px_-1px_0px_0px_#ffffff30_inset] hover:bg-purple-800 transition-all"
                             >
                                 {loading ? "Processing..." : "Get OTP"}
                             </button>

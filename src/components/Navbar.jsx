@@ -103,7 +103,7 @@ const Navbar = () => {
                                 }`
                             }
                         >
-                            Welcome, {user?.name}
+                            Welcome, {user?.firstName}
                         </NavLink>
                         <NavLink
                             onClick={handleLogout}
