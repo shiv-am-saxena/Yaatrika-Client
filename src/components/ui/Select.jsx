@@ -16,17 +16,43 @@ function SelectGroup({ ...props }) {
 function SelectValue({ ...props }) {
     return <SelectPrimitive.Value data-slot="select-value" {...props} />;
 }
-
-function SelectTrigger({ className, size = "default", children, ...props }) {
+function SelectTrigger({ className, size = "default", children, animated = true, ...props }) {
     const radius = 100;
     const [visible, setVisible] = React.useState(false);
-    let mouseX = useMotionValue(0);
-    let mouseY = useMotionValue(0);
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
 
     function handleMouseMove({ currentTarget, clientX, clientY }) {
-        let { left, top } = currentTarget.getBoundingClientRect();
+        const { left, top } = currentTarget.getBoundingClientRect();
         mouseX.set(clientX - left);
         mouseY.set(clientY - top);
+    }
+
+    const sharedClass = cn(
+        "group/trigger w-full rounded-lg p-[2px] transition duration-300"
+    );
+
+    const sharedTriggerClass = cn(
+        "flex w-full items-center justify-between gap-2 rounded-md border-0 bg-purple-500 px-3 py-2 text-sm text-white shadow-xs transition-[color,box-shadow] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-10 data-[size=sm]:h-8 focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-transparent dark:bg-input/30 dark:hover:bg-input/50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg:not([class*='size-'])]:size-4",
+        className
+    );
+
+    const trigger = (
+        <SelectPrimitive.Trigger
+            data-slot="select-trigger"
+            data-size={size}
+            className={sharedTriggerClass}
+            {...props}
+        >
+            {children}
+            <SelectPrimitive.Icon asChild>
+                <ChevronDownIcon className="size-4 opacity-50" />
+            </SelectPrimitive.Icon>
+        </SelectPrimitive.Trigger>
+    );
+
+    if (!animated) {
+        return <div className={sharedClass}>{trigger}</div>;
     }
 
     return (
@@ -36,32 +62,20 @@ function SelectTrigger({ className, size = "default", children, ...props }) {
             onMouseLeave={() => setVisible(false)}
             style={{
                 background: useMotionTemplate`
-          radial-gradient(
-            ${visible ? radius + "px" : "0px"} circle at ${mouseX}px ${mouseY}px,
-            #fff,
-            transparent 80%
-          )
-        `,
+                    radial-gradient(
+                        ${visible ? radius + "px" : "0px"} circle at ${mouseX}px ${mouseY}px,
+                        #fff,
+                        transparent 80%
+                    )
+                `,
             }}
-            className="group/trigger w-full rounded-lg p-[2px] transition duration-300"
+            className={sharedClass}
         >
-            <SelectPrimitive.Trigger
-                data-slot="select-trigger"
-                data-size={size}
-                className={cn(
-                    "flex w-full items-center justify-between gap-2 rounded-md border-0 bg-purple-500 px-3 py-2 text-sm text-white shadow-xs transition-[color,box-shadow] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-10 data-[size=sm]:h-8 focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-transparent dark:bg-input/30 dark:hover:bg-input/50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg:not([class*='size-'])]:size-4",
-                    className
-                )}
-                {...props}
-            >
-                {children}
-                <SelectPrimitive.Icon asChild>
-                    <ChevronDownIcon className="size-4 opacity-50" />
-                </SelectPrimitive.Icon>
-            </SelectPrimitive.Trigger>
+            {trigger}
         </motion.div>
     );
 }
+
 
 function SelectContent({ className, children, position = "popper", ...props }) {
     return (

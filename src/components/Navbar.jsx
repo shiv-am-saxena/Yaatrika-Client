@@ -56,7 +56,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <nav className={`sticky top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? "backdrop-blur-md shadow-lg bg-purple-950/80 border-b border-purple-800" : "bg-purple-950"}`}>
+        <nav className={`sticky top-0 h-16 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? "backdrop-blur-md shadow-lg bg-purple-950/80 border-b border-purple-800" : "bg-purple-950"}`}>
             <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-3 md:py-4">
                 {/* Logo */}
                 <h1 className="text-2xl lg:text-3xl font-bold uppercase text-white tracking-widest font-montserrat">
@@ -153,7 +153,7 @@ const Navbar = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.4 }}
-                        className="sticky top-16 z-40 w-full rounded-b-2xl bg-purple-800/80 py-6 backdrop-blur-md shadow-lg md:hidden"
+                        className="sticky top-18 z-40 w-full rounded-b-2xl bg-purple-800/80 py-6 backdrop-blur-md shadow-lg md:hidden"
                     >
                         <div className="flex flex-col items-center space-y-4">
                             {authLink.map(({ name, slug }, index) => (

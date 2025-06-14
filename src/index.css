@@ -1,16 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
-/* @font-face {
-    font-family: Montserrat;
-    font-style: normal;
-    font-display: swap;
-    src: url("./assets/fonts/Montserrat-VariableFont_wght.ttf") format("ttf");
-  } */
+
 html {
     scroll-behavior: smooth;
 }
 
-@theme inline {
+/* =========================
+   Custom Theme Variables
+========================= */
+@theme {
+    /* Font */
+    --font-montserrat: "Montserrat", "sans-serif";
+
+    /* Color Palette */
+    --color-primary: #a855f7;
+    /* Purple (Violet-500) */
+    --color-secondary: #c084fc;
+    /* Lighter Purple */
+    --color-accent: #e879f9;
+    /* Pink-Purple */
+    --color-info: #8b5cf6;
+    /* Indigo */
+    --color-bg: #ffffff;
+    --color-bg-dark: #1a1a2e;
+    --color-text: #1f2937;
+    --color-text-dark: #f3f4f6;
+
+    /* Animation: Meteor */
     --animate-meteor: meteor 5s linear infinite;
 
     @keyframes meteor {
@@ -28,9 +44,8 @@ html {
             opacity: 0;
         }
     }
-}
 
-@theme inline {
+    /* Animation: Shine */
     --animate-shine: shine var(--duration) infinite linear;
 
     @keyframes shine {
@@ -46,15 +61,38 @@ html {
             background-position: 0% 0%;
         }
     }
+
+    /* Shadows */
+    --shadow-input: 0px 2px 3px -1px rgba(0, 0, 0, 0.1),
+    0px 1px 0px 0px rgba(25, 28, 33, 0.02),
+    0px 0px 0px 1px rgba(25, 28, 33, 0.08);
 }
 
-@theme inline {
-    --shadow-input:
-        0px 2px 3px -1px rgba(0, 0, 0, 0.1),
-        0px 1px 0px 0px rgba(25, 28, 33, 0.02),
-        0px 0px 0px 1px rgba(25, 28, 33, 0.08);
-}
+/* =========================
+   Base Styles
+========================= */
+@layer base {
+    body {
+        font-family: var(--font-montserrat);
+        background-color: var(--color-bg);
+        color: var(--color-text);
+    }
 
-@theme {
-    --font-montserrat: "Montserrat", "sans-serif"; 
-  }
+    .dark body {
+        background-color: var(--color-bg-dark);
+        color: var(--color-text-dark);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-montserrat);
+    }
+
+    a {
+        color: var(--color-primary);
+    }
+}
