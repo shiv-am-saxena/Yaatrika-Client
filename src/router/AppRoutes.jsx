@@ -9,7 +9,7 @@ import Home from '../pages/Home';
 import AuthPage from '../pages/AuthPage';
 import { CaptainSignup } from '../components/CaptainForm';
 
-import UserHome from '../pages/user/UserHome';
+import UserHome from '../pages/user/userHome';
 import CaptainHome from '../pages/captain/CaptainHome';
 
 import ProtectedRoute from './ProtectedRoutes'; // ✅ Ensure correct filename

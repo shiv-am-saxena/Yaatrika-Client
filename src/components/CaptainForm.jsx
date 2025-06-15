@@ -32,10 +32,10 @@ export function CaptainSignup() {
     const [isVerified, setIsVerified] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const [clicks, setClicks] = React.useState(0);
-    const [vehicalCapacity, setVehicalCapacity] = React.useState("");
-    const [vehicalPlate, setVehicalPlate] = React.useState("");
-    const [vehicalType, setVehicalType] = React.useState("");
-    const [vehicalColor, setVehicalColor] = React.useState("");
+    const [vehicleCapacity, setVehicleCapacity] = React.useState("");
+    const [vehiclePlate, setVehiclePlate] = React.useState("");
+    const [vehicleType, setVehicleType] = React.useState("");
+    const [vehicleColor, setVehicleColor] = React.useState("");
     const countries = [
         { id: "+1", name: "United States" },
         { id: "+44", name: "United Kingdom" },
@@ -162,10 +162,10 @@ export function CaptainSignup() {
                 countryCode,
                 phoneNumber: phone,
                 isVerified: String(isVerified),
-                vehicalCapacity,
-                vehicalPlate,
-                vehicalType,
-                vehicalColor,
+                vehicleCapacity,
+                vehiclePlate,
+                vehicleType,
+                vehicleColor,
             });
 
             const res = response.data;
@@ -286,16 +286,16 @@ export function CaptainSignup() {
                         </LabelInputContainer>
                     </div>
                     <LabelInputContainer className={`mb-4`}>
-                        <Label>Vehical Information</Label>
+                        <Label>Vehicle Information</Label>
                         <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 justify-between">
-                            <Input placeholder="Vehical Colour" type="text" value={vehicalColor} onChange={(e) => setVehicalColor(e.target.value)} />
-                            <Input placeholder="Vehical Plate" type="text" value={vehicalPlate} onChange={(e) => setVehicalPlate(e.target.value)} />
+                            <Input placeholder="Vehicle Colour" type="text" value={vehicleColor} onChange={(e) => setVehicleColor(e.target.value)} />
+                            <Input placeholder="Vehicle Plate" type="text" value={vehiclePlate} onChange={(e) => setVehiclePlate(e.target.value)} />
                         </div>
                         <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 justify-between">
-                            <Input placeholder="Vehical Capacity" type="text" value={vehicalCapacity} onChange={(e) => setVehicalCapacity(e.target.value)} />
-                            <Select onValueChange={setVehicalType} id="gender">
+                            <Input placeholder="Vehicle Capacity" type="text" value={vehicleCapacity} onChange={(e) => setVehicleCapacity(e.target.value)} />
+                            <Select onValueChange={setVehicleType} id="gender">
                                 <SelectTrigger className={`w-full bg-purple-500`}>
-                                    <SelectValue placeholder="Select Vehical Type" />
+                                    <SelectValue placeholder="Select Vehicle Type" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="car">Car</SelectItem>
