@@ -71,7 +71,7 @@ export default function Home() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 1.4 }}
-                        className="relative z-10 mt-16 w-full max-w-5xl overflow-hidden rounded-3xl border-2 border-purple-300 bg-purple-100/20 shadow-xl backdrop-blur-sm dark:border-purple-700 dark:bg-purple-900/30"
+                        className="relative z-10 mt-10 w-full max-w-5xl overflow-hidden rounded-3xl border-2 border-purple-300 bg-purple-100/20 shadow-xl backdrop-blur-sm dark:border-purple-700 dark:bg-purple-900/30"
                     >
                         <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl">
                             <img

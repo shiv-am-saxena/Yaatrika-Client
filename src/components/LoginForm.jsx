@@ -5,7 +5,7 @@ import { Input } from "./ui/InputBx";
 import { ShineBorder } from './ui/ShineBorder';
 import { Link, useNavigate } from "react-router-dom";
 import { showErrorToast, showInfoToast, showSuccessToast } from "../lib/toast";
-import { clearAuth, setError, setLoading, setToken, setUser } from "../context/slices/authSlice";
+import { clearAuth, setError, setLoading, setRole, setToken, setUser } from "../context/slices/authSlice";
 import axiosInstance from "../config/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -77,6 +77,7 @@ export function Login() {
                 localStorage.setItem("token", res.data.token);
                 dispatch(setUser(res.data.user));
                 dispatch(setToken(res.data.token));
+                dispatch(setRole(res.data.role))
                 showSuccessToast("OTP Verified");
                 res.data.role === 'user' ? navigate('/user/home'):navigate('/captain/home');
             }

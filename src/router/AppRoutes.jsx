@@ -11,8 +11,10 @@ import { CaptainSignup } from '../components/CaptainForm';
 
 import UserHome from '../pages/user/userHome';
 import CaptainHome from '../pages/captain/CaptainHome';
+import RidePanel from '../pages/user/RidePanel';
 
 import ProtectedRoute from './ProtectedRoutes'; // ✅ Ensure correct filename
+import Profile from '../pages/user/Profile';
 
 export default function AppRoutes() {
     return (
@@ -32,6 +34,8 @@ export default function AppRoutes() {
             {/* Protected Routes for Users */}
             <Route path="/user" element={<ProtectedRoute />}>
                 <Route path="home" element={<UserHome />} />
+                <Route path="ride" element={<RidePanel />} />
+                <Route path="profile" element={<Profile/>}/>
             </Route>
 
             {/* Protected Routes for Captains */}

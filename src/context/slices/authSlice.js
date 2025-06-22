@@ -6,6 +6,7 @@ const initialState = {
     loading: false,
     error: null,
     isAuthenticated: !!localStorage.getItem("token"), // ✔️ Pre-fill based on token
+    role: null,
 };
 
 const authSlice = createSlice({
@@ -16,6 +17,9 @@ const authSlice = createSlice({
             state.user = action.payload;
             state.isAuthenticated = true;
         },
+        setRole(state, action){
+            state.role = action.payload;
+        },
         setToken(state, action) {
             state.token = action.payload;
             localStorage.setItem("token", action.payload);
@@ -24,6 +28,7 @@ const authSlice = createSlice({
         clearAuth(state) {
             state.user = null;
             state.token = null;
+            state.role = null;
             state.isAuthenticated = false;
             localStorage.removeItem("token");
         },
@@ -36,5 +41,5 @@ const authSlice = createSlice({
     },
 });
 
-export const { setUser, setToken, clearAuth, setLoading, setError } = authSlice.actions;
+export const { setUser, setToken, clearAuth, setLoading, setError, setRole } = authSlice.actions;
 export default authSlice.reducer;

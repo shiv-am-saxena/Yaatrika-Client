@@ -1,0 +1,16 @@
+# robots.txt for Yaatrika - A women-oriented cab service app
+
+# Allow all search engines
+User-agent: *
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /private/
+Disallow: /server-status/
+
+# Allow everything else
+Allow: /
+
+# Optional: Point to your sitemap for better indexing
+Sitemap: https://yaatrika.com/sitemap.xml

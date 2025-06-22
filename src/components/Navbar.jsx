@@ -10,7 +10,7 @@ import { clearAuth, setLoading } from "../context/slices/authSlice";
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    const { isAuthenticated, user } = useSelector((state) => state.auth);
+    const { isAuthenticated, user, role } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const authLink = [
         { name: "Sign In", slug: "/auth/login" },
@@ -29,7 +29,6 @@ const Navbar = () => {
                 },
             });
             const res = await response.data;
-            console.log(res)
             if (res.success) {
                 localStorage.removeItem('token');
                 showSuccessToast(res.message);
@@ -38,7 +37,7 @@ const Navbar = () => {
         } catch (error) {
             showErrorToast(error.response.message);
             dispatch(setLoading(false));
-        }finally{
+        } finally {
             dispatch(setLoading(false));
         }
     }
@@ -66,7 +65,13 @@ const Navbar = () => {
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center space-x-8">
                     <NavLink
-                        to='/'
+                        to={
+                            !isAuthenticated
+                                ? '/'
+                                : role === 'user'
+                                    ? '/user/home'
+                                    : '/captain/home'
+                        }
                         className={({ isActive }) =>
                             `text-lg font-semibold tracking-wide ${isActive
                                 ? "text-white underline underline-offset-4"
@@ -95,7 +100,13 @@ const Navbar = () => {
                     ))}
                     {isAuthenticated && <>
                         <NavLink
-                            to='/profile'
+                            to={
+                                !isAuthenticated
+                                    ? '/'
+                                    : role === 'user'
+                                        ? '/user/profile'
+                                        : '/captain/profile'
+                            }
                             className={({ isActive }) =>
                                 `text-lg font-semibold tracking-wide ${isActive
                                     ? "text-white underline underline-offset-4"
@@ -156,6 +167,24 @@ const Navbar = () => {
                         className="sticky top-18 z-40 w-full rounded-b-2xl bg-purple-800/80 py-6 backdrop-blur-md shadow-lg md:hidden"
                     >
                         <div className="flex flex-col items-center space-y-4">
+                            <NavLink
+                                to={
+                                    !isAuthenticated
+                                        ? '/'
+                                        : role === 'user'
+                                            ? '/user/home'
+                                            : '/captain/home'
+                                }
+                                onClick={() => setIsMenuOpen(false)}
+                                className={({ isActive }) =>
+                                    `text-lg font-semibold tracking-wide ${isActive
+                                        ? "text-white underline underline-offset-4"
+                                        : "text-purple-100 hover:text-purple-300"
+                                    }`
+                                }
+                            >
+                                Home
+                            </NavLink>
                             {authLink.map(({ name, slug }, index) => (
                                 <NavLink
                                     to={slug}
@@ -165,12 +194,45 @@ const Navbar = () => {
                                         `text-lg font-semibold tracking-wide ${isActive
                                             ? "text-white underline underline-offset-4"
                                             : "text-purple-100 hover:text-purple-300"
+                                        } ${isAuthenticated
+                                            ? "hidden"
+                                            : "block"
                                         }`
                                     }
                                 >
                                     {name}
                                 </NavLink>
                             ))}
+                            {isAuthenticated && <>
+                                <NavLink
+                                    to={
+                                        !isAuthenticated
+                                            ? '/'
+                                            : role === 'user'
+                                                ? '/user/profile'
+                                                : '/captain/profile'
+                                    }
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className={({ isActive }) =>
+                                        `text-lg font-semibold tracking-wide ${isActive
+                                            ? "text-white underline underline-offset-4"
+                                            : "text-purple-100 hover:text-purple-300"
+                                        }`
+                                    }
+                                >
+                                    Welcome, {user?.firstName}
+                                </NavLink>
+                                <NavLink
+                                    onClick={() => {
+                                        setIsMenuOpen(false);
+                                        handleLogout();
+                                    }
+                                    }
+                                    className={`text-lg font-semibold tracking-wide text-white`}
+                                >
+                                    Logout
+                                </NavLink></>
+                            }
                         </div>
                     </motion.div>
                 )}

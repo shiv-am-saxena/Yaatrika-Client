@@ -6,7 +6,8 @@ import {
     setUser,
     clearAuth,
     setLoading,
-    setError
+    setError,
+    setRole
 } from "../context/slices/authSlice";
 
 const useAuth = () => {
@@ -30,12 +31,12 @@ const useAuth = () => {
             const response = res.data;
 
             if (response.success) {
-                dispatch(setUser(response.data));
+                dispatch(setUser(response.data.user));
+                dispatch(setRole(response.data.role));
             } else {
                 throw new Error("Invalid token");
             }
         } catch (err) {
-            console.error("Auth verification failed:", err);
             dispatch(setError(err?.response?.data?.message || "Authentication failed"));
             dispatch(clearAuth());
             navigate("/auth/login", { replace: true });

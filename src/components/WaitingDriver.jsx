@@ -10,7 +10,7 @@ export default function WaitingDriver({ setWaitingForDriver }) {
     const timer = useRef(null);
     useEffect(() => {
         timer.current = setTimeout(() => {
-            navigate('/user/ride');
+            navigate('/user/ride', { replace: true });
         }, 5000);
 
         return () => {
@@ -27,7 +27,7 @@ export default function WaitingDriver({ setWaitingForDriver }) {
                     <img
                         src="https://randomuser.me/api/portraits/men/32.jpg"
                         alt="Driver"
-                        className="h-12 w-12 rounded-full object-cover"
+                        className="size-18 rounded-full object-cover"
                     />
                 </div>
 
