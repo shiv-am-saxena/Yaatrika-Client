@@ -6,17 +6,11 @@ import { ShineBorder } from "./ui/ShineBorder";
 import { Link, useNavigate } from "react-router-dom";
 import { showErrorToast, showInfoToast, showSuccessToast } from "../lib/toast";
 import { clearAuth, setError, setLoading, setToken, setUser } from "../context/slices/authSlice";
-import axiosInstance from "../config/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "./ui/InputOtp";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "./ui/Select";
-
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/Select";
+import { useSendOtp } from '../hooks/useSendOtp';
+import {usePostData} from '../hooks/usePostData';
 export function CaptainSignup() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -86,59 +80,43 @@ export function CaptainSignup() {
         { id: "+995", name: "Georgia" },
     ];
 
-    const getOTP = async (e) => {
+    const otpMutation = useSendOtp({ phone, clicks, setClicks, setDisabled });
+    const verifyOtpMutation = usePostData('/auth/verify-otp');
+    const signupMutation = usePostData('/auth/captain/register');
+    const getOTP = (e) => {
         e.preventDefault();
 
-        if (!phone) {
-            showErrorToast("Please enter phone number first");
-            return;
-        }
-
+        if (!phone) return showErrorToast("Please enter phone number first");
         if (clicks >= 5) {
             setDisabled(true);
             showInfoToast("Only 5 OTPs can be requested in 12 hours.");
             return;
         }
 
-        try {
-            dispatch(setLoading(true));
-            const response = await axiosInstance.post("/auth/send-otp", { phoneNumber: phone });
-            const res = response.data;
-            if (res.success) {
-                showSuccessToast(res.message);
-                setDisabled(true);
-                setTimeout(() => setDisabled(false), 30000);
-                setClicks((prev) => prev + 1);
-                if (import.meta.env.VITE_ENV !== "production") {
-                    alert("OTP: " + res.data);
-                }
-            }
-        } catch (err) {
-            const message = err?.response?.data?.message || "Failed to send OTP";
-            console.error(err);
-            showErrorToast(message);
-        } finally {
-            dispatch(setLoading(false));
-        }
+        otpMutation.mutate();
     };
 
     const verifyOtp = async (e) => {
         e.preventDefault();
-        try {
-            dispatch(setLoading(true));
-            const response = await axiosInstance.post("/auth/verify-otp", { phoneNumber: phone, otp });
-            const res = response.data;
-            if (res.success) {
-                showSuccessToast(res.message);
-                setIsVerified(true);
-            }
-        } catch (err) {
-            const message = err?.response?.data?.message || "Failed to verify OTP";
-            console.error(err);
-            showErrorToast(message);
-        } finally {
-            dispatch(setLoading(false));
-        }
+        dispatch(setLoading(true));
+
+        verifyOtpMutation.mutate({ phoneNumber: phone, otp },
+            {
+                onSuccess: res => {
+                    if (res.success) {
+                        showSuccessToast(res.message);
+                        setIsVerified(true);
+                    }
+                },
+                onError: (err) => {
+                    const message = err?.response?.data?.message || "Failed to verify OTP";
+                    console.error(err);
+                    showErrorToast(message);
+                },
+                onSettle: () => {
+                    dispatch(setLoading(false));
+                }
+            });
     };
 
     const registerHandler = async (e) => {
@@ -152,40 +130,42 @@ export function CaptainSignup() {
             showErrorToast("Verify your number first.");
             return;
         }
-        try {
-            dispatch(setLoading(true));
-            const response = await axiosInstance.post("/auth/captain/register", {
-                firstName,
-                lastName,
-                email,
-                gender,
-                countryCode,
-                phoneNumber: phone,
-                isVerified: String(isVerified),
-                vehicleCapacity,
-                vehiclePlate,
-                vehicleType,
-                vehicleColor,
-            });
 
-            const res = response.data;
-            if (res.success) {
-                localStorage.setItem("token", res.data.token);
-                showSuccessToast(res.message);
-                dispatch(setUser(res.data.user));
-                dispatch(setToken(res.data.token));
-                navigate("/");
+        dispatch(setLoading(true));
+        signupMutation({
+            firstName,
+            lastName,
+            email,
+            gender,
+            countryCode,
+            phoneNumber: phone,
+            isVerified: String(isVerified),
+            vehicleCapacity,
+            vehiclePlate,
+            vehicleType,
+            vehicleColor,
+        }, {
+            onSuccess: (res) => {
+                if (res.success) {
+                    localStorage.setItem("token", res.data.token);
+                    showSuccessToast(res.message);
+                    dispatch(setUser(res.data.user));
+                    dispatch(setToken(res.data.token));
+                    navigate("/");
+                }
+            }, 
+            onError: (err) => {
+                const message = err?.response?.data?.message || "User registration failed";
+                console.error("User registration failed:", err);
+                dispatch(setError(message));
+                showErrorToast(error);
+                dispatch(clearAuth());
+            }, 
+            onSettle: () => {
+                dispatch(setLoading(false));
             }
-        } catch (err) {
-            const message = err?.response?.data?.message || "User registration failed";
-            console.error("User registration failed:", err);
-            dispatch(setError(message));
-            showErrorToast(error);
-            dispatch(clearAuth());
-        } finally {
-            dispatch(setLoading(false));
-        }
-    };
+        })
+    }
     return (
         <div className="relative h-fit mx-auto w-fit overflow-hidden md:rounded-2xl">
             <ShineBorder shineColor={'#fff'} />
