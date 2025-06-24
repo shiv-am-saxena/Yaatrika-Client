@@ -8,18 +8,78 @@ import VehicalPanel from '../../components/VehicalPanel';
 import ConfirmRide from '../../components/ConfirmRide';
 import LookForDriver from '../../components/LookForDriver';
 import WaitingDriver from '../../components/WaitingDriver';
+import { usePostData } from '../../hooks/usePostData';
+import { set } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+
 export default function UserHome() {
-	const [pickup, setPickup] = useState('');
-	const [destination, setDestination] = useState('');
-	const submitHandler = (e) => {
-		e.preventDefault();
-	}
+	const [pickup, setPickup] = useState();
+	const [destination, setDestination] = useState();
+	const [activeField, setActiveField] = useState(null); // 'pickup' or 'destination'
 	const [panelOpen, setPanelOpen] = useState(false)
 	const [leaveNow, setLeaveNow] = useState('')
 	const [vehiclePanel, setVehiclePanel] = useState(false);
 	const [confirmRide, setConfirmRide] = useState(false);
 	const [searchDriver, setSearchDriver] = useState(false);
 	const [waitingForDriver, setWaitingForDriver] = useState(false);
+	const [suggestions, setSuggestions] = useState(null);
+	const [loading, setLoading] = useState(false);
+	// Fetch suggestions based on which field is active and its value
+	const suggestionQuery = activeField === 'pickup' ? pickup : destination;
+	const getSuggestionsMutation = usePostData('/map/get-suggestions');
+	const submitHandler = (e) => {
+		e.preventDefault();
+	}
+	const handlePickup = (e) => {
+		setPickup(e.target.value);
+		setActiveField('pickup');
+		setPanelOpen(true);
+		if (pickup !== undefined) {
+			setLoading(true)
+			getSuggestionsMutation.mutate({ input: pickup }, {
+				onSuccess: res => {
+					if (res.success) {
+						setSuggestions(res.data.suggestions)
+					}
+				},
+				onSettled : ()=>{
+					setLoading(false);
+				}
+			})
+		}
+	}
+	const handleDestination = (e) => {
+		setDestination(e.target.value);
+		setActiveField('destination');
+		setPanelOpen(true);
+		if (pickup !== undefined) {
+			setLoading(true)
+			getSuggestionsMutation.mutate({ input: destination }, {
+				onSuccess: res => {
+					if (res.success) {
+						setSuggestions(res.data.suggestions)
+					}
+				},
+				onSettled : ()=>{
+					setLoading(false);
+				}
+			})
+		}
+	}
+	const handleSuggestionSelect = (value) => {
+		if (activeField === 'pickup') {
+			setPickup(value);
+			setSuggestions(null);
+			setActiveField('destination');
+
+		};
+		if (activeField === 'destination') {
+			setDestination(value);
+			setSuggestions(null);
+			setActiveField(null);
+		};
+	};
+
 	return (
 		<div className="relative h-[calc(100vh-64px)] w-full font-montserrat">
 			{/* Background GIF */}
@@ -46,8 +106,11 @@ export default function UserHome() {
 							type="text"
 							placeholder="Add a pick-up location"
 							value={pickup}
-							onChange={e => setPickup(e.target.value)}
-							onClick={() => { setPanelOpen(true) }}
+							onChange={handlePickup}
+							onClick={() => {
+								setActiveField('pickup');
+								setPanelOpen(true);
+							}}
 							className="w-full rounded-lg bg-secondary pl-12 py-2 pr-4 text-base text-white placeholder:text-white/70 focus:outline-0 focus:ring-1 focus:ring-[var(--color-accent)]"
 						/>
 
@@ -55,34 +118,38 @@ export default function UserHome() {
 							type="text"
 							placeholder="Enter your destination"
 							value={destination}
-							onChange={e => setDestination(e.target.value)}
-							onClick={() => { setPanelOpen(true) }}
+							onChange={handleDestination}
+							onClick={() => {
+								setActiveField('destination');
+								setPanelOpen(true);
+							}}
 							className="w-full rounded-lg  bg-secondary pl-12 py-2 pr-4 text-base text-white placeholder:text-white/70 focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
-						/><Select onValueChange={setLeaveNow} id="leave-timing" defaultValue="leave-now">
-							<SelectTrigger
-								className="w-full bg-purple-500 whitespace-nowrap flex items-center gap-2"
-								animated={false}
-							>
-								<SelectValue placeholder="When to leave" />
-							</SelectTrigger>
-
-							<SelectContent>
-								<SelectItem value="leave-now">
-									<span className="flex items-center gap-2">
-										<Timer className="size-4" />
-										Leave Now
-									</span>
-								</SelectItem>
-
-								<SelectItem value="leave-later">
-									<span className="flex items-center gap-2">
-										<Calendar className="size-4" />
-										Later
-									</span>
-								</SelectItem>
-							</SelectContent>
-						</Select>
-
+						/>
+						<div className="w-full flex items-center justify-between gap-3">
+							<Select onValueChange={setLeaveNow} id="leave-timing" defaultValue="leave-now">
+								<SelectTrigger
+									className="w-full bg-purple-500 whitespace-nowrap flex items-center gap-2"
+									animated={false}
+								>
+									<SelectValue placeholder="When to leave" />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="leave-now">
+										<span className="flex items-center gap-2">
+											<Timer className="size-4" />
+											Leave Now
+										</span>
+									</SelectItem>
+									<SelectItem value="leave-later">
+										<span className="flex items-center gap-2">
+											<Calendar className="size-4" />
+											Later
+										</span>
+									</SelectItem>
+								</SelectContent>
+							</Select>
+							<button type='submit' className='w-full bg-purple-500 text-center text-white p-2 rounded-md'>Search</button>
+						</div>
 					</form>
 				</div>
 				<AnimatePresence>
@@ -97,11 +164,14 @@ export default function UserHome() {
 							<LocationSearchPanel
 								setPanelOpen={setPanelOpen}
 								setVehiclePanel={setVehiclePanel}
+								suggestions={suggestions}
+								loading={loading}
+								onSuggestionSelect={handleSuggestionSelect}
+								activeField={activeField}
 							/>
 						</motion.div>
 					)}
 				</AnimatePresence>
-
 				<AnimatePresence>
 					{vehiclePanel && (
 						<motion.div

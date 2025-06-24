@@ -1,63 +1,86 @@
 import { MapPin } from 'lucide-react'
 import React from 'react'
+import { useCurrentLocation } from '../hooks/useCurrentLocation'
+import { usePostData } from '../hooks/usePostData';
+import { showErrorToast } from '../lib/toast';
 
 export default function LocationSearchPanel(props) {
-    const locations = [
-        {
-            name: "Rani Laxmi Bai Memorial School",
-            address: "Sector-10 Main Rd, Sector 14, Indira Nagar, Lucknow",
-            distance: "4.2 mi",
-        },
-        {
-            name: "City Mall Gomti Nagar",
-            address: "Vibhuti Khand, Gomti Nagar, Lucknow",
-            distance: "3.5 mi",
-        },
-        {
-            name: "Hazratganj Metro Station",
-            address: "MG Marg, Hazratganj, Lucknow",
-            distance: "6.1 mi",
-        },
-        {
-            name: "SGPGI Hospital",
-            address: "Raebareli Rd, Lucknow",
-            distance: "8.0 mi",
-        },
-        {
-            name: "Amausi Airport",
-            address: "Airport Road, Amausi, Lucknow",
-            distance: "10.4 mi",
-        },
-        {
-            name: "Amausi Airport",
-            address: "Airport Road, Amausi, Lucknow",
-            distance: "10.4 mi",
+    const { setPanelOpen, suggestions, loading, onSuggestionSelect, activeField } = props;
+    const { location, error } = useCurrentLocation();
+    const getLocationMutation = usePostData('/map/get-address');
+
+    // Handler for current location button
+    const handleCurrentLocation = () => {
+        if (location) {
+            getLocationMutation.mutate({ coords: location }, {
+                onSuccess: res => {
+                    if (res.success) {
+                        onSuggestionSelect(res.data.address);
+                    }
+                },
+                onError: (err) => {
+                    const message = err?.response?.data?.message || "Unable to get current location";
+                    console.error(err);
+                    showErrorToast(message);
+                },
+                onSettle: () => {
+                    setPanelOpen(false);
+                }
+            })
         }
-    ];
-    const { setPanelOpen, setVehiclePanel } = props;
+    };
     return (
-        <div className='h-full w-full px-5 mb-5 space-y-2 overflow-y-auto'> 
-            {locations.map((location, index) => (
-                <div key={index} onClick={()=>{setVehiclePanel(true); setPanelOpen(false)}} className='border border-neutral-200 w-full p-2 rounded-lg text-white flex space-x-2 hover:bg-accent'>
+        <div className='h-full w-full px-5 mb-5 space-y-2 overflow-y-auto'>
+            {/* Show current location button only for pickup field */}
+            {activeField === 'pickup' && (
+                <button
+                    type="button"
+                    onClick={handleCurrentLocation}
+                    className="w-full flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg mb-2"
+                >
+                    <MapPin className="size-4" />
+                    Use Current Location
+                </button>
+            )}
+            {loading && (
+                <div className="text-white text-center py-4">Loading suggestions...</div>
+            )}
+            {!loading && suggestions && suggestions.length > 0 && suggestions.map((location, index) => (
+                <div
+                    key={index}
+                    onClick={() => {
+                        onSuggestionSelect(location.description || location.name || '');
+                        // setVehiclePanel && setVehiclePanel(true);
+                        // setPanelOpen(true);
+                    }}
+                    className='border border-neutral-200 w-full p-2 rounded-lg text-white flex space-x-2 hover:bg-accent cursor-pointer'
+                >
                     {/* Left: Icon + Distance */}
                     <div className='w-fit flex flex-col items-center whitespace-nowrap'>
                         <MapPin className='text-sm rounded-full' />
-                        <span className='text-sm'>{location.distance}</span>
+                        {location.distance && <span className='text-sm'>{location.distance}</span>}
                     </div>
 
                     {/* Right: Name and Address (truncate handled) */}
                     <div className='flex flex-col items-start flex-1 overflow-hidden'>
                         <h4 className="text-white text-sm font-semibold truncate w-full">
-                            {location.name}
+                            {location.name || location.description}
                         </h4>
-                        <p className='text-neutral-100 text-xs truncate w-full'>
-                            {location.address}
-                        </p>
+                        {location.address && (
+                            <p className='text-neutral-100 text-xs truncate w-full'>
+                                {location.address}
+                            </p>
+                        )}
                     </div>
                 </div>
-
             ))}
-
+            {!loading && (!suggestions || suggestions.length === 0) && (
+                <div className="text-white text-center py-4"/>
+            )}
+            {/* Optionally show error if location fetch fails */}
+            {activeField === 'pickup' && error && (
+                <div className="text-red-400 text-xs mt-2">{error}</div>
+            )}
         </div>
     )
 }
