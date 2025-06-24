@@ -1,5 +1,4 @@
 import { MapPin } from 'lucide-react'
-import React from 'react'
 import { useCurrentLocation } from '../hooks/useCurrentLocation'
 import { usePostData } from '../hooks/usePostData';
 import { showErrorToast } from '../lib/toast';
@@ -20,7 +19,6 @@ export default function LocationSearchPanel(props) {
                 },
                 onError: (err) => {
                     const message = err?.response?.data?.message || "Unable to get current location";
-                    console.error(err);
                     showErrorToast(message);
                 },
                 onSettle: () => {

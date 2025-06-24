@@ -9,12 +9,11 @@ import ConfirmRide from '../../components/ConfirmRide';
 import LookForDriver from '../../components/LookForDriver';
 import WaitingDriver from '../../components/WaitingDriver';
 import { usePostData } from '../../hooks/usePostData';
-import { set } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { showErrorToast } from '../../lib/toast';
 
 export default function UserHome() {
-	const [pickup, setPickup] = useState();
-	const [destination, setDestination] = useState();
+	const [pickup, setPickup] = useState('');
+	const [destination, setDestination] = useState('');
 	const [activeField, setActiveField] = useState(null); // 'pickup' or 'destination'
 	const [panelOpen, setPanelOpen] = useState(false)
 	const [leaveNow, setLeaveNow] = useState('')
@@ -24,11 +23,32 @@ export default function UserHome() {
 	const [waitingForDriver, setWaitingForDriver] = useState(false);
 	const [suggestions, setSuggestions] = useState(null);
 	const [loading, setLoading] = useState(false);
-	// Fetch suggestions based on which field is active and its value
-	const suggestionQuery = activeField === 'pickup' ? pickup : destination;
 	const getSuggestionsMutation = usePostData('/map/get-suggestions');
+	const getFareMutation = usePostData('/ride/get-fare');
+	const [fare, setFare] = useState(null);
 	const submitHandler = (e) => {
 		e.preventDefault();
+		if (!pickup, !destination) {
+			showErrorToast("Pickup and Desitnation Required");
+			return;
+		}
+		setLoading(true);
+		getFareMutation.mutate({ origin: pickup, destination }, {
+			onSuccess: (res) => {
+				if (res.success) {
+					setFare(res.data.fare);
+				}
+			},
+			onError: (err) => {
+				const message = err?.response?.data?.message || "Unable to get fare";
+				console.error(err);
+				showErrorToast(message);
+			},
+			onSettled: ()=>{
+				setVehiclePanel(true);
+				setPanelOpen(false);
+			}
+		})
 	}
 	const handlePickup = (e) => {
 		setPickup(e.target.value);
@@ -42,7 +62,7 @@ export default function UserHome() {
 						setSuggestions(res.data.suggestions)
 					}
 				},
-				onSettled : ()=>{
+				onSettled: () => {
 					setLoading(false);
 				}
 			})
@@ -60,7 +80,7 @@ export default function UserHome() {
 						setSuggestions(res.data.suggestions)
 					}
 				},
-				onSettled : ()=>{
+				onSettled: () => {
 					setLoading(false);
 				}
 			})
@@ -181,7 +201,7 @@ export default function UserHome() {
 							transition={{ duration: 0.3, ease: 'easeInOut' }}
 							className="fixed bottom-0 w-full bg-primary p-4 space-y-3 z-50"
 						>
-							<VehicalPanel setVehiclePanel={setVehiclePanel} setConfirmRide={setConfirmRide} />
+							<VehicalPanel setVehiclePanel={setVehiclePanel} setConfirmRide={setConfirmRide} fare={fare}/>
 						</motion.div>
 					)}
 				</AnimatePresence>
