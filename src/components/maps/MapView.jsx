@@ -19,7 +19,7 @@ export default function MapView({ pickup, destination, captain, user }) {
     const { location } = useCurrentLocation();
 
     const { isLoaded, loadError } = useJsApiLoader({
-        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API,
         mapIds: [import.meta.env.VITE_GOOGLE_MAP_ID], // Optional but clearer
         libraries: ['places', 'marker'],
     });
