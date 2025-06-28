@@ -46,7 +46,7 @@ export function Login() {
 
 
     return (
-        <div className="relative h-fit mx-auto w-fit overflow-hidden md:rounded-2xl">
+        <div className="relative h-fit mx-auto w-fit overflow-hidden md:rounded-2xl rounded-lg">
             <ShineBorder shineColor={"#fff"} />
             <div className="shadow-input w-full sm:w-md max-w-md rounded-none p-4 md:p-8 bg-purple-950">
                 <h2 className="text-xl font-bold text-center text-neutral-200">
