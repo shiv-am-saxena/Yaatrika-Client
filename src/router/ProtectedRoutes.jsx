@@ -1,19 +1,27 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth.js";
 
 const ProtectedRoute = () => {
-    const { isAuthenticated, loading } = useAuth();
+    const { isAuthenticated, loading, role } = useAuth();
+    const location = useLocation();
 
     if (loading) {
-        return <div>Loading...</div>; // Or a better loader component
+        return <div>Loading...</div>;
     }
 
-    // 🔒 Redirect to login if not authenticated
     if (!isAuthenticated) {
         return <Navigate to="/auth/login" replace />;
     }
 
-    // ✅ Render the protected content
+    // Restrict "user" role from accessing /captain/* routes
+    if (role === "user" && location.pathname.startsWith("/captain/")) {
+        return <Navigate to="/user/home" replace />;
+    }
+    // Restrict "user" role from accessing /captain/* routes
+    if (role === "captain" && location.pathname.startsWith("/user/")) {
+        return <Navigate to="/captain/home" replace />;
+    }
+
     return <Outlet />;
 };
 

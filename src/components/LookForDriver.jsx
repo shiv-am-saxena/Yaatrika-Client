@@ -1,9 +1,8 @@
 import { ChevronDown, CircleDot, IndianRupee, MapPin } from 'lucide-react';
-import sedan from '../assets/sedan.png';
 import { useEffect, useRef } from 'react';
 
 export default function LookForDriver(props) {
-    const { setSearchDriver, setWaitingForDriver } = props;
+    const { setSearchDriver, setWaitingForDriver, confirm } = props;
     const timerRef = useRef(null);
     useEffect(() => {
         timerRef.current = setTimeout(() => {
@@ -20,14 +19,13 @@ export default function LookForDriver(props) {
                     Confirm your ride
                 </h4>
             </div>
-            <img src={sedan} className='w-40 justify-self-center' alt="Searching for nearby driver" />
+            <img src={confirm.vehicle.img} className='w-40 justify-self-center' alt="Searching for nearby driver" />
             <div className="w-full text-white rounded-lg p-1 flex flex-col gap-4">
                 {/* Pickup Address */}
                 <div className="flex items-start gap-3">
                     <MapPin className="mt-1 text-white h-5 w-5" />
                     <div>
-                        <p className="font-bold text-white text-sm">562/11-A</p>
-                        <p className="text-sm text-neutral-100">Kaikondrahalli, Bengaluru, Karnataka</p>
+                        <p className="font-bold text-white text-sm">{confirm.pickup}</p>
                     </div>
                 </div>
 
@@ -35,11 +33,7 @@ export default function LookForDriver(props) {
                 <div className="flex items-start gap-3">
                     <CircleDot className="mt-1 text-white h-5 w-5" />
                     <div>
-                        <p className="font-bold text-white text-sm">Third Wave Coffee</p>
-                        <p className="text-sm text-neutral-100">
-                            17th Cross Rd, PWD Quarters, 1st Sector,
-                            HSR Layout, Bengaluru, Karnataka
-                        </p>
+                        <p className="font-bold text-white text-sm">{confirm.destination}</p>
                     </div>
                 </div>
 
@@ -47,8 +41,7 @@ export default function LookForDriver(props) {
                 <div className="flex items-start gap-3">
                     <IndianRupee className="mt-1 text-white h-5 w-5" />
                     <div>
-                        <p className="font-bold text-white text-sm">₹193.20</p>
-                        <p className="text-sm text-neutral-100">Cash</p>
+                        <p className="font-bold text-white text-sm">{confirm.vehicle.fare}</p>
                     </div>
                 </div>
                 <button onClick={() => {

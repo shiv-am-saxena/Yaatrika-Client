@@ -10,6 +10,8 @@ import LookForDriver from '../../components/LookForDriver';
 import WaitingDriver from '../../components/WaitingDriver';
 import { usePostData } from '../../hooks/usePostData';
 import { showErrorToast } from '../../lib/toast';
+import { useCurrentLocation } from '../../hooks/useCurrentLocation';
+import MapView from '../../components/maps/MapView';
 
 export default function UserHome() {
 	const [pickup, setPickup] = useState('');
@@ -26,6 +28,10 @@ export default function UserHome() {
 	const getSuggestionsMutation = usePostData('/map/get-suggestions');
 	const getFareMutation = usePostData('/ride/get-fare');
 	const [fare, setFare] = useState(null);
+	const [vehicle, setVehicle] = useState(null);
+	const [confirm, setConfirm] = useState(null);
+
+	const {location, error} = useCurrentLocation();
 	const submitHandler = (e) => {
 		e.preventDefault();
 		if (!pickup, !destination) {
@@ -44,7 +50,7 @@ export default function UserHome() {
 				console.error(err);
 				showErrorToast(message);
 			},
-			onSettled: ()=>{
+			onSettled: () => {
 				setVehiclePanel(true);
 				setPanelOpen(false);
 			}
@@ -103,16 +109,19 @@ export default function UserHome() {
 	return (
 		<div className="relative h-[calc(100vh-64px)] w-full font-montserrat">
 			{/* Background GIF */}
-			<div className="h-full max-h-screen w-full bg-[var(--color-bg)]">
-				<img
-					src="https://miro.medium.com/max/1280/0*gwMx05pqII5hbfmX.gif"
-					alt="City ride background"
-					className="h-full w-full object-cover"
+			{/* Background Map */}
+			<div className="h-[calc(100vh-300px)] max-h-screen w-full bg-[var(--color-bg)]">
+				<MapView
+					user={location}           // (optional) use `useCurrentLocation()` hook
+					// pickup={pickupLocationObj}    // Must be { lat, lng }
+					// destination={destinationObj}  // Must be { lat, lng }
+					// captain={captainLocationObj}  // (optional) for live tracking
 				/>
 			</div>
 
+
 			{/* Foreground Form Container */}
-			<div className="absolute bottom-0 h-[calc(100vh-64px)] left-0 w-full flex flex-col justify-end">
+			<div className={`absolute bottom-0 ${panelOpen ? 'h-[calc(100vh-64px)]': 'h-fit'} left-0 w-full flex flex-col justify-end`}>
 				<div className={`relative h-fit bg-[var(--color-primary)]/80 backdrop-blur-lg ${!panelOpen ? 'rounded-t-2xl' : 'rounded-none'} p-6 md:p-8  shadow-lg`}>
 					<div className="w-full flex items-start justify-between">
 						<h4 className="text-2xl font-semibold text-[var(--color-text-dark)] mb-6">
@@ -201,7 +210,7 @@ export default function UserHome() {
 							transition={{ duration: 0.3, ease: 'easeInOut' }}
 							className="fixed bottom-0 w-full bg-primary p-4 space-y-3 z-50"
 						>
-							<VehicalPanel setVehiclePanel={setVehiclePanel} setConfirmRide={setConfirmRide} fare={fare}/>
+							<VehicalPanel setVehiclePanel={setVehiclePanel} setConfirmRide={setConfirmRide} fare={fare} setVehicle={setVehicle} />
 						</motion.div>
 					)}
 				</AnimatePresence>
@@ -214,7 +223,7 @@ export default function UserHome() {
 							transition={{ duration: 0.3, ease: 'easeInOut' }}
 							className="fixed bottom-0 w-full bg-primary p-4 space-y-3 z-50"
 						>
-							<ConfirmRide setConfirmRide={setConfirmRide} setSearchDriver={setSearchDriver} setVehiclePanel={setVehiclePanel} />
+							<ConfirmRide setConfirmRide={setConfirmRide} setSearchDriver={setSearchDriver} setVehiclePanel={setVehiclePanel} vehicle={vehicle} pickup={pickup} destination={destination} setConfirm={setConfirm} />
 						</motion.div>
 					)}
 				</AnimatePresence>
@@ -227,7 +236,7 @@ export default function UserHome() {
 							transition={{ duration: 0.3, ease: 'easeInOut' }}
 							className="fixed bottom-0 w-full bg-primary p-4 space-y-3 z-50"
 						>
-							<LookForDriver setSearchDriver={setSearchDriver} setWaitingForDriver={setWaitingForDriver} />
+							<LookForDriver setSearchDriver={setSearchDriver} setWaitingForDriver={setWaitingForDriver} confirm={confirm} />
 						</motion.div>
 					)}
 				</AnimatePresence>

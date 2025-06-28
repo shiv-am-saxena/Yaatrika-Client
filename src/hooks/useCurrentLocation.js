@@ -13,7 +13,7 @@ export const useCurrentLocation = () => {
         const watchId = navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
-                setLocation({ latitude, longitude });
+                setLocation({ lat:latitude, lng:longitude });
             },
             (err) => {
                 setError(err.message || "Failed to get location");

@@ -1,9 +1,25 @@
 import { ChevronDown, CircleDot, IndianRupee, MapPin } from 'lucide-react';
 import React from 'react'
-import sedan from '../assets/sedan.png';
+import { usePostData } from '../hooks/usePostData';
+import { showErrorToast } from '../lib/toast';
 
 export default function ConfirmRide(props) {
-    const { setConfirmRide, setSearchDriver, setVehiclePanel } = props;
+    const { setConfirmRide, setSearchDriver, setVehiclePanel, vehicle, pickup, destination, setConfirm } = props;
+    const createRide = usePostData('/ride/create');
+    const handleRide = () => {
+        createRide.mutate({ origin: pickup, destination, vehicleType: vehicle.label.toLowerCase() }, {
+            onSuccess: (res) => {
+                if (res.success) {
+                    setConfirm({ vehicle, pickup, destination });
+                    setConfirmRide(false)
+                    setSearchDriver(true)
+                }
+            },
+            onError: (err) => {
+                showErrorToast(err?.data?.message || "Failed to create ride.");
+            }
+        })
+    }
     return (
         <>
             <div className="w-full flex items-center justify-between">
@@ -15,44 +31,35 @@ export default function ConfirmRide(props) {
                     onClick={() => setConfirmRide(false)}
                 />
             </div>
-            <img src={sedan} className='w-40 justify-self-center' alt="Searching for nearby driver" />
+            <img src={vehicle.img} className='w-40 justify-self-center' alt="Searching for nearby driver" />
             <div className="w-full text-white rounded-lg p-1 flex flex-col gap-4">
                 {/* Pickup Address */}
-                <div className="flex items-start gap-3">
-                    <MapPin className="mt-1 text-white h-5 w-5" />
+                <div className="flex items-center gap-3">
+                    <MapPin className="text-white h-7 w-7" />
                     <div>
-                        <p className="font-bold text-white text-sm">562/11-A</p>
-                        <p className="text-sm text-neutral-100">Kaikondrahalli, Bengaluru, Karnataka</p>
+                        <p className="font-bold text-white text-sm">{pickup}</p>
                     </div>
                 </div>
 
                 {/* Drop Address */}
-                <div className="flex items-start gap-3">
-                    <CircleDot className="mt-1 text-white h-5 w-5" />
+                <div className="flex items-center gap-3">
+                    <CircleDot className="mr-1 text-white h-7 w-7" />
                     <div>
-                        <p className="font-bold text-white text-sm">Third Wave Coffee</p>
-                        <p className="text-sm text-neutral-100">
-                            17th Cross Rd, PWD Quarters, 1st Sector,
-                            HSR Layout, Bengaluru, Karnataka
-                        </p>
+                        <p className="font-bold text-white text-sm">{destination}</p>
                     </div>
                 </div>
 
                 {/* Fare Info */}
-                <div className="flex items-start gap-3">
-                    <IndianRupee className="mt-1 text-white h-5 w-5" />
+                <div className="flex items-center gap-3">
+                    <IndianRupee className="text-white h-5 w-5" />
                     <div>
-                        <p className="font-bold text-white text-sm">₹193.20</p>
-                        <p className="text-sm text-neutral-100">Cash</p>
+                        <p className="font-bold text-white text-md">{vehicle.fare}</p>
                     </div>
                 </div>
             </div>
             <div className="flex flex-col gap-3 w-full">
                 <button
-                    onClick={() => {
-                        setSearchDriver(true)
-                        setConfirmRide(false)
-                    }} className="p-3 w-full rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700 active:bg-green-800 transition-colors duration-200">
+                    onClick={handleRide} className="p-3 w-full rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700 active:bg-green-800 transition-colors duration-200">
                     Confirm Ride
                 </button>
                 <button onClick={() => {

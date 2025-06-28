@@ -43,30 +43,30 @@ export default function LocationSearchPanel(props) {
             {loading && (
                 <div className="text-white text-center py-4">Loading suggestions...</div>
             )}
-            {!loading && suggestions && suggestions.length > 0 && suggestions.map((location, index) => (
+            {!loading && suggestions && suggestions.length > 0 && suggestions.map((locate, index) => (
                 <div
                     key={index}
                     onClick={() => {
-                        onSuggestionSelect(location.description || location.name || '');
+                        onSuggestionSelect(locate.name || '');
                         // setVehiclePanel && setVehiclePanel(true);
                         // setPanelOpen(true);
                     }}
                     className='border border-neutral-200 w-full p-2 rounded-lg text-white flex space-x-2 hover:bg-accent cursor-pointer'
                 >
                     {/* Left: Icon + Distance */}
-                    <div className='w-fit flex flex-col items-center whitespace-nowrap'>
+                    <div className='w-fit flex flex-col p-1 items-center whitespace-nowrap'>
                         <MapPin className='text-sm rounded-full' />
-                        {location.distance && <span className='text-sm'>{location.distance}</span>}
+                        {location.distance && <span className='text-sm'>{locate.distance}</span>}
                     </div>
 
                     {/* Right: Name and Address (truncate handled) */}
                     <div className='flex flex-col items-start flex-1 overflow-hidden'>
                         <h4 className="text-white text-sm font-semibold truncate w-full">
-                            {location.name || location.description}
+                            {locate.name || locate.description}
                         </h4>
-                        {location.address && (
+                        {locate.address && (
                             <p className='text-neutral-100 text-xs truncate w-full'>
-                                {location.address}
+                                {locate.address}
                             </p>
                         )}
                     </div>

@@ -13,7 +13,7 @@ import {
 const useAuth = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { user, loading, error, isAuthenticated } = useSelector(
+    const { user, loading, error, isAuthenticated, role } = useSelector(
         (state) => state.auth
     );
 
@@ -49,7 +49,7 @@ const useAuth = () => {
         verifyToken();
     }, [verifyToken]);
 
-    return { user, loading, error, isAuthenticated };
+    return { user, loading, error, isAuthenticated, role };
 };
 
 export default useAuth;

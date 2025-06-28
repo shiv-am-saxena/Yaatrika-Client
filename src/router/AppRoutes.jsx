@@ -9,13 +9,13 @@ import Home from '../pages/Home';
 import AuthPage from '../pages/AuthPage';
 import { CaptainSignup } from '../components/CaptainForm';
 
-import UserHome from '../pages/user/userHome';
+import UserHome from '../pages/user/UserHome';
 import CaptainHome from '../pages/captain/CaptainHome';
 import RidePanel from '../pages/user/RidePanel';
 
 import ProtectedRoute from './ProtectedRoutes'; // ✅ Ensure correct filename
 import Profile from '../pages/user/Profile';
-
+import CaptainProfile from '../pages/captain/Profile';
 export default function AppRoutes() {
     return (
         <Routes>
@@ -41,6 +41,7 @@ export default function AppRoutes() {
             {/* Protected Routes for Captains */}
             <Route path="/captain" element={<ProtectedRoute />}>
                 <Route path="home" element={<CaptainHome />} />
+                <Route path='profile' element={<CaptainProfile/>}/>
             </Route>
         </Routes>
     );
