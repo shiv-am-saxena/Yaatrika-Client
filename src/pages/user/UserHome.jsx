@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react';
-import { Calendar, ChevronDown, Timer, User2 } from 'lucide-react';
-import LocationSearchPanel from '../../components/LocationSearchPAnel';
+import { Calendar, ChevronDown, Timer } from 'lucide-react';
+import LocationSearchPanel from '../../components/LocationSearchPanel';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/Select';
 import VehicalPanel from '../../components/VehicalPanel';
 import ConfirmRide from '../../components/ConfirmRide';
