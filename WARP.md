@@ -7,19 +7,19 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 ### Build and Development
 ```powershell
 # Install dependencies
-bun install
+npm install
 
 # Start development server (default port: 5173)
-bun dev
+npm run dev
 
 # Build for production
-bun build
+npm run build
 
 # Preview production build
-bun run preview
+npm run preview
 
 # Run linting
-bun run lint
+npm run lint
 ```
 
 ### Environment Setup
